@@ -1,6 +1,6 @@
 struct slmed{
 	multiset<int> bef,aft;
-	help(){}
+	slmed(){}
 	void fix(){
 		if(bef.size()){
 			auto itr = bef.end(); itr--;
