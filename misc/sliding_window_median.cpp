@@ -1,5 +1,6 @@
+template<typename T>
 struct slmed{
-	multiset<int> bef,aft;
+	multiset<T> bef,aft;
 	slmed(){}
 	void fix(){
 		if(bef.size()){
@@ -11,19 +12,19 @@ struct slmed{
 		}
 		
 	}
-	void insert(int x){
+	void insert(T x){
 		bef.insert(x);
 		fix();
 	}
-	void remove(int x){ // Can't remove if not present. Will throw error
+	void erase(T x){ // Can't remove if not present. Will throw error / TLE
 		auto itr = bef.end(); itr--;
 		if(*itr < x) aft.erase(aft.lower_bound(x));
 		else bef.erase(bef.lower_bound(x));
 		fix();
 	}
-	int tell(){
+	T tell(){
 		auto itr = bef.end(); itr--;
 		if(bef.size() == aft.size() + 1)return *itr;
-		return (*itr + *aft.begin())/2;
+		return (*itr + *aft.begin())/2.0;
 	}
 };
