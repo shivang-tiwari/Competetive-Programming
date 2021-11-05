@@ -1,3 +1,4 @@
+// TODO : Check how the median is defined
 template<typename T>
 struct slmed{
 	multiset<T> bef,aft;
