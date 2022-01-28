@@ -3,13 +3,13 @@ vector<vector<T>> multiply(vector<vector<T>> a, vector<vector<T>> b){
 	assert(a[0].size() == b.size());
 	int r1 = a.size(),c1 = a[0].size(),c2 = b[0].size();
 	vector<vector<T>> res(r1,vector<T>(c1,0));
-    for (int i = 0; i < r1; i++){
-        for (int j = 0; j < c2; j++){
-            for (int k = 0; k < c1; k++)
-                res[i][j] += a[i][k]*b[k][j];
-        }
-    }
-    return res;
+	for (int i = 0; i < r1; i++){
+		for (int j = 0; j < c2; j++){
+			for (int k = 0; k < c1; k++)
+				res[i][j] += a[i][k]*b[k][j];
+		}
+	}
+	return res;
 }
 
 template <typename T>vector<T> multiply(vector<vector<T>> a, vector<T> b){return multiply({b},a)[0];}
