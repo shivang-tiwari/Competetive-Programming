@@ -7,13 +7,15 @@ struct dsu{
 		siz.resize(n,1);
 		iota(parent.begin(),parent.end(), 0);
 	}
-	bool cmp(int a, int b){ // Give indices here
+	inline bool cmp(int a, int b){ // Give indices here
 		return siz[a] < siz[b];
 	}
 	inline int find(int x){ // Give index here
+		assert(x >= 0 && x < n);
 		return (x == parent[x] ? x : (parent[x] = find(parent[x])));
 	}
-	inline bool combine(int a, int b){ // Give indices here, (returns true if a and b are in different sets)
+	bool combine(int a, int b){ // Give indices here, (returns true if a and b are in different sets)
+		assert(min(a,b) >= 0 && max(a,b) < n);
 		a = find(a);
 		b = find(b);
 		if(a != b){
@@ -23,5 +25,9 @@ struct dsu{
 			return true;
 		}
 		return false;
+	}
+	inline bool same(int a,int b){
+		assert(min(a,b) >= 0 && max(a,b) < n);
+		return find(a) == find(b);
 	}
 };
