@@ -75,8 +75,8 @@ class HLD{
 				sum = v; 
 			}
 			void push(int l, int r, int v) { // Lazy propogation (used by add)
-				//sum += v*(r - l + 1); 
-				//add += v;
+				sum += v*(r - l + 1); 
+				add += v;
 			}
 		};
 		node unite(const node &a, const node &b) const { // Set combination operation
@@ -85,13 +85,13 @@ class HLD{
 			return res;
 		}
 		inline void push(int x, int l, int r) {
-			//int y = (l + r) >> 1;
-			//int z = x + ((y - l + 1) << 1);
-			//if (tree[x].add != neutral) {
-				//tree[x + 1].push(l, y, tree[x].add);
-				//tree[z].push(y + 1, r, tree[x].add);
-				//tree[x].add = neutral;
-			//}
+			int y = (l + r) >> 1;
+			int z = x + ((y - l + 1) << 1);
+			if (tree[x].add != neutral) {
+				tree[x + 1].push(l, y, tree[x].add);
+				tree[z].push(y + 1, r, tree[x].add);
+				tree[x].add = neutral;
+			}
 			
 			// Don't forget to uncomment node.push
 		}
@@ -230,9 +230,10 @@ class HLD{
 	vector<int> heavy;
 	vector<int> chain_head;
 	int tim;
+	bool leave_lca;
 	LCA lca;
 	segtree tr;
-	HLD(const vector<vector<int>> &G,vector<int> &values){
+	HLD(const vector<vector<int>> &G,vector<int> &values,bool _leave_lca){
 		adj = G;
 		a = values;
 		N = G.size();
@@ -244,6 +245,7 @@ class HLD{
 		chain_head.resize(N,-1);
 		iota(chain_head.begin(),chain_head.end(),0);
 		tim = 0;
+		leave_lca = _leave_lca;
 		lca = LCA(adj);
 		tr = segtree(N);
 		sub_dfs(0);
@@ -285,11 +287,16 @@ class HLD{
 		}
 	}
 	// All functions below
-	segtree::node find(int u,int v,bool leave_lca = false){
-		if(u == v)return tr.find(label[u],label[u]);
-		int lc = lca.lca(u,v);
+	segtree::node find(int u,int v,int flag = -1){
+		if(flag == -1){
+			flag = leave_lca;
+		}
 		segtree::node res;
-		if(leave_lca){
+		if(u == v){
+			return (flag ? res : tr.find(label[u],label[u]));
+		}
+		int lc = lca.lca(u,v);
+		if(flag){
 			while(depth[u] > depth[lc]){
 				int where = (depth[chain_head[u]] <= depth[lc] ? lc : chain_head[u]);
 				if(where == lc){
@@ -326,4 +333,47 @@ class HLD{
 	void update(int i,int v){
 		tr.update(label[i],v);
 	}
+	void add(int u,int v,int x, int flag = -1){
+		if(flag == -1)flag = leave_lca;
+		if(u == v){
+			if(flag)return;
+			tr.add(label[u],label[u]);
+			return;
+		}
+		int lc = lca.lca(u,v);
+		if(flag){
+			while(depth[u] > depth[lc]){
+				int where = (depth[chain_head[u]] <= depth[lc] ? lc : chain_head[u]);
+				if(where == lc){
+					tr.add(label[where]+1,label[u],x);
+					u = lc;
+				}
+				else{
+					tr.add(label[where],label[u],x);
+					u = par[where];
+				}
+			}
+		}
+		else{
+			while(u != -1 && depth[u] >= depth[lc]){
+				int where = (depth[chain_head[u]] <= depth[lc] ? lc : chain_head[u]);
+				tr.add(label[where],label[u],x);
+				u = par[where];
+			}
+		}
+		u = v;
+		while(depth[u] > depth[lc]){
+			int where = (depth[chain_head[u]] <= depth[lc] ? lc : chain_head[u]);
+			if(where == lc){
+				tr.add(label[where]+1,label[u],x);
+				u = lc;
+			}
+			else{
+				tr.add(label[where],label[u],x);
+				u = par[where];
+			}
+		}
+	}
 };
+
+// Set third argument to FALSE for vertex queries and TRUE for edge queries
