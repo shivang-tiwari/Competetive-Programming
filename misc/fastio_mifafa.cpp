@@ -112,36 +112,43 @@ namespace fastIO{
 		} 
 		void print(int x){ 
 			static char s[15],*s1;s1=s; 
-			if (!x)*s1++='0';if (x<0)out('-'),x=-x; 
+			if (!x)*s1++='0';
+			if (x<0)out('-'),x=-x; 
 			while(x)*s1++=x%10+'0',x/=10; 
 			while(s1--!=s)out(*s1); 
 		} 
 		void println(int x){ 
 			static char s[15],*s1;s1=s; 
-			if (!x)*s1++='0';if (x<0)out('-'),x=-x; 
+			if (!x)*s1++='0';
+			if (x<0)out('-'),x=-x; 
 			while(x)*s1++=x%10+'0',x/=10; 
-			while(s1--!=s)out(*s1); out('\n'); 
+			while(s1--!=s)out(*s1);
+			out('\n'); 
 		} 
 		void print(ll x){ 
 			static char s[25],*s1;s1=s; 
-			if (!x)*s1++='0';if (x<0)out('-'),x=-x; 
+			if (!x)*s1++='0';
+			if (x<0)out('-'),x=-x; 
 			while(x)*s1++=x%10+'0',x/=10; 
 			while(s1--!=s)out(*s1); 
 		} 
 		void println(ll x){ 
 			static char s[25],*s1;s1=s; 
-			if (!x)*s1++='0';if (x<0)out('-'),x=-x; 
+			if (!x)*s1++='0';
+			if (x<0)out('-'),x=-x; 
 			while(x)*s1++=x%10+'0',x/=10; 
-			while(s1--!=s)out(*s1); out('\n'); 
+			while(s1--!=s)out(*s1); 
+			out('\n'); 
 		} 
 		void print(double x,int y){ 
 			static ll mul[]={1,10,100,1000,10000,100000,1000000,10000000,100000000, 
 				1000000000,10000000000LL,100000000000LL,1000000000000LL,10000000000000LL, 
 				100000000000000LL,1000000000000000LL,10000000000000000LL,100000000000000000LL}; 
-			if (x<-1e-12)out('-'),x=-x;x*=mul[y]; 
+			if (x<-1e-12)out('-'),x=-x;
+			x*=mul[y]; 
 			ll x1=(ll)floor(x); if (x-floor(x)>=0.5)++x1; 
 			ll x2=x1/mul[y],x3=x1-x2*mul[y]; print(x2); 
-			if (y>0){out('.'); for (size_t i=1;i<y&&x3*mul[i]<mul[y];++i) out('0'); print(x3);} 
+			if (y>0){out('.'); for (int i=1;i<y&&x3*mul[i]<mul[y];++i) out('0'); print(x3);} 
 		} 
 		void println(double x,int y){print(x,y);out('\n');} 
 		void print(char *s){while (*s)out(*s++);} 
