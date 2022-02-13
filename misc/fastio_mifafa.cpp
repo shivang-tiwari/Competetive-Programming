@@ -1,7 +1,6 @@
 namespace fastIO{ 
 	#define BUF_SIZE 100000 
 	#define OUT_SIZE 100000 
-	#define ll long long 
 	//fread->read 
 	bool IOerror=0; 
 	inline char nc(){ 
@@ -22,7 +21,7 @@ namespace fastIO{
 		for (;ch>='0'&&ch<='9';ch=nc())x=x*10+ch-'0'; 
 		if (sign)x=-x; 
 	} 
-	inline void read(ll &x){ 
+	inline void read(long long int &x){ 
 		bool sign=0; char ch=nc(); x=0; 
 		for (;blank(ch);ch=nc()); 
 		if (IOerror)return; 
@@ -60,7 +59,7 @@ namespace fastIO{
 		for (;ch>='0'&&ch<='9';x=x*10+ch-'0',ch=getchar()); 
 		if (bo)x=-x; 
 	} 
-	inline void read1(ll &x){ 
+	inline void read1(long long int &x){ 
 		char ch;int bo=0;x=0; 
 		for (ch=getchar();ch<'0'||ch>'9';ch=getchar())if (ch=='-')bo=1; 
 		for (;ch>='0'&&ch<='9';x=x*10+ch-'0',ch=getchar()); 
@@ -85,7 +84,7 @@ namespace fastIO{
 	inline void read1(char &c){for (c=getchar();blank(c);c=getchar());} 
 	//scanf->read 
 	inline void read2(int &x){scanf("%d",&x);} 
-	inline void read2(ll &x){ 
+	inline void read2(long long int &x){ 
 		#ifdef _WIN32 
 			scanf("%I64d",&x); 
 		#else 
@@ -125,14 +124,14 @@ namespace fastIO{
 			while(s1--!=s)out(*s1);
 			out('\n'); 
 		} 
-		void print(ll x){ 
+		void print(long long int x){ 
 			static char s[25],*s1;s1=s; 
 			if (!x)*s1++='0';
 			if (x<0)out('-'),x=-x; 
 			while(x)*s1++=x%10+'0',x/=10; 
 			while(s1--!=s)out(*s1); 
 		} 
-		void println(ll x){ 
+		void println(long long int x){ 
 			static char s[25],*s1;s1=s; 
 			if (!x)*s1++='0';
 			if (x<0)out('-'),x=-x; 
@@ -141,13 +140,13 @@ namespace fastIO{
 			out('\n'); 
 		} 
 		void print(double x,int y){ 
-			static ll mul[]={1,10,100,1000,10000,100000,1000000,10000000,100000000, 
+			static long long int mul[]={1,10,100,1000,10000,100000,1000000,10000000,100000000, 
 				1000000000,10000000000LL,100000000000LL,1000000000000LL,10000000000000LL, 
 				100000000000000LL,1000000000000000LL,10000000000000000LL,100000000000000000LL}; 
 			if (x<-1e-12)out('-'),x=-x;
 			x*=mul[y]; 
-			ll x1=(ll)floor(x); if (x-floor(x)>=0.5)++x1; 
-			ll x2=x1/mul[y],x3=x1-x2*mul[y]; print(x2); 
+			long long int x1=(long long int)floor(x); if (x-floor(x)>=0.5)++x1; 
+			long long int x2=x1/mul[y],x3=x1-x2*mul[y]; print(x2); 
 			if (y>0){out('.'); for (int i=1;i<y&&x3*mul[i]<mul[y];++i) out('0'); print(x3);} 
 		} 
 		void println(double x,int y){print(x,y);out('\n');} 
@@ -160,8 +159,8 @@ namespace fastIO{
 	inline void println(int x){Ostream.println(x);} 
 	inline void print(char x){Ostream.out(x);} 
 	inline void println(char x){Ostream.out(x);Ostream.out('\n');} 
-	inline void print(ll x){Ostream.print(x);} 
-	inline void println(ll x){Ostream.println(x);} 
+	inline void print(long long int x){Ostream.print(x);} 
+	inline void println(long long int x){Ostream.println(x);} 
 	inline void print(double x,int y){Ostream.print(x,y);} 
 	inline void println(double x,int y){Ostream.println(x,y);} 
 	inline void print(char *s){Ostream.print(s);} 
@@ -177,13 +176,13 @@ namespace fastIO{
 		while(p1--!=buf)*o++=*p1; 
 	} 
 	inline void println1(int x){print1(x);*o++='\n';} 
-	inline void print1(ll x){ 
+	inline void print1(long long int x){ 
 		static char buf[25]; 
 		char *p1=buf;if (!x)*p1++='0';if (x<0)*o++='-',x=-x; 
 		while(x)*p1++=x%10+'0',x/=10; 
 		while(p1--!=buf)*o++=*p1; 
 	} 
-	inline void println1(ll x){print1(x);*o++='\n';} 
+	inline void println1(long long int x){print1(x);*o++='\n';} 
 	inline void print1(char c){*o++=c;} 
 	inline void println1(char c){*o++=c;*o++='\n';} 
 	inline void print1(char *s){while (*s)*o++=*s++;} 
@@ -197,7 +196,7 @@ namespace fastIO{
 	inline void println2(int x){printf("%d\n",x);} 
 	inline void print2(char x){printf("%c",x);} 
 	inline void println2(char x){printf("%c\n",x);} 
-	inline void print2(ll x){ 
+	inline void print2(long long int x){ 
 		#ifdef _WIN32 
 			printf("%I64d",x); 
 		#else 
@@ -208,7 +207,7 @@ namespace fastIO{
 		#endif 
 		#endif 
 	} 
-	inline void println2(ll x){print2(x);printf("\n");} 
+	inline void println2(long long int x){print2(x);printf("\n");} 
 	inline void println2(){printf("\n");} 
 	#undef ll 
 	#undef OUT_SIZE 
