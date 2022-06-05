@@ -10,8 +10,8 @@ f(n) = sum_{d | n} g(d) mu(n/d)
 
 mu(n) = [
 			0 if n = k * p^2 for some prime number p
-			+1 if n has even number of prime factors
-			-1 if n has odd number of prime factors
+			+1 if n != p^2 and n has even number of prime factors
+			-1 if n != p^2 and n has odd number of prime factors
 		]
 
 sum_{d | n} mu(d) = [
@@ -32,8 +32,8 @@ void prep(int MAXN = 1e6){
 	mobius.resize(MAXN+1);
 	lp.resize(MAXN+1,-1);
 	mobius[1] = 1;
-    for (int i = 2; i <= MAXN; ++i) {
-        if (lp[i] == -1){
+	for (int i = 2; i <= MAXN; ++i) {
+		if (lp[i] == -1){
 			for (int j = i; j <= MAXN; j += i){
 				if(lp[j] == -1){
 					lp[j] = i;
@@ -53,5 +53,5 @@ void prep(int MAXN = 1e6){
 			}
 			return cnt&1 ? -1 : 1;
 		}(i);
-    }
+	}
 }
