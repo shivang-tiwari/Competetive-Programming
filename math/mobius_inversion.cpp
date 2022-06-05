@@ -10,8 +10,8 @@ f(n) = sum_{d | n} g(d) mu(n/d)
 
 mu(n) = [
 			0 if n = k * p^2 for some prime number p
-			+1 if n != p^2 and n has even number of prime factors
-			-1 if n != p^2 and n has odd number of prime factors
+			+1 if n has even number of prime factors
+			-1 if n has odd number of prime factors
 		]
 
 sum_{d | n} mu(d) = [
