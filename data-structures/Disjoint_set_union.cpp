@@ -26,8 +26,12 @@ struct dsu{
 		}
 		return false;
 	}
-	inline bool same(int a,int b){
+	inline bool same(int a,int b){ // Returns true if a and b are in same set
 		assert(min(a,b) >= 0 && max(a,b) < n);
 		return find(a) == find(b);
+	}
+	inline int size(int x){ // Returns the size of the set containing a
+		assert(x >= 0 && x < n);
+		return siz[find(x)];
 	}
 };
