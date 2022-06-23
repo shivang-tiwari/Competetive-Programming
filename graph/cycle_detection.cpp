@@ -27,8 +27,9 @@ bool isCyclic(vector<vector<int>> &adj){
 
 //This detects cycle in an ***undirected graph***
 vector<int> cyc;
-bool isCyclic(vector<vector<int>> &adj){
+bool isCyclic(vector<vector<int>> &adj,bool need_cycle = false){
 	int V = adj.size();
+	cyc.clear();
 	bool *visited = new bool[V];
 	for(int i = 0; i < V; i++){
 		visited[i] = false;
@@ -43,13 +44,17 @@ bool isCyclic(vector<vector<int>> &adj){
 				}
 			}
 			else if(i != parent){
-				reverse(cyc.begin(),cyc.end());
-				while(!cyc.empty() && cyc.back() != i)cyc.pop_back();
-				reverse(cyc.begin(),cyc.end());
+				if(need_cycle){
+					reverse(cyc.begin(),cyc.end());
+					while(!cyc.empty() && cyc.back() != i)cyc.pop_back();
+					reverse(cyc.begin(),cyc.end());
+				}
 				return true;
 			}
 		}
-		cyc.pop_back();
+		if(need_cycle){
+			cyc.pop_back();
+		}
 		return false;
 	};
 	for(int i = 0; i < V; i++){
