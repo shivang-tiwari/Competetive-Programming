@@ -35,7 +35,9 @@ bool isCyclic(vector<vector<int>> &adj,bool need_cycle = false){
 		visited[i] = false;
 	}
 	function<bool(int,int)> cycle = [&](int v,int parent) -> bool {
-		cyc.push_back(v);
+		if(need_cycle){
+			cyc.push_back(v);
+		}
 		visited[v] = true;
 		for(int i : adj[v]){
 			if (!visited[i]){
