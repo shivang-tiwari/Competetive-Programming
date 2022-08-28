@@ -93,7 +93,10 @@ struct string_hash{
 
 template<typename T_string = string>
 bool same(const string_hash<T_string> &v1, int l1,int r1, const string_hash<T_string> &v2,int l2,int r2){ // v1[l1, ... ,r1] == v2[l2 , ... ,r2]
-	return v1.find_hash(l1,r1) == v2.find_hash(l2,r2);
+	if(max(l1,r1) - min(l1,r1) != max(l2,r2) - min(l2,r2)){
+		return false;
+	}
+	return v1.find_hash_scaled(l1,r1) == v2.find_hash_scaled(l2,r2);
 }
 
 template<typename T_string = string>
