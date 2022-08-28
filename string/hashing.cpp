@@ -92,6 +92,17 @@ struct string_hash{
 };
 
 template<typename T_string = string>
-bool same(const string_hash<T_string> &v1, int l1,int r1, const string_hash<T_string> &v2,int l2,int r2){
+bool same(const string_hash<T_string> &v1, int l1,int r1, const string_hash<T_string> &v2,int l2,int r2){ // v1[l1, ... ,r1] == v2[l2 , ... ,r2]
 	return v1.find_hash(l1,r1) == v2.find_hash(l2,r2);
 }
+
+template<typename T_string = string>
+int64_t concat(string_hash<T_string> &v1, int l1,int r1, string_hash<T_string> &v2,int l2,int r2){ // concatenates v1[l1, ... ,r1] and v2[l2, ... ,r2]
+	assert(v1.MOD == v2.MOD);
+	assert(v1.p == v2.p);
+	int64_t res = v2.find_hash(l2,r2);
+	(res *= v1.power(v1.p,max(r1,l1)-min(r1,l1)+1)) %= v1.MOD;
+	return (res + v1.find_hash(l1,r1)) % v1.MOD;
+}
+
+// hash(s) = s[0] + p*s[1] + p^2*s[2] + ... + p^(n-1) s[n-1]
