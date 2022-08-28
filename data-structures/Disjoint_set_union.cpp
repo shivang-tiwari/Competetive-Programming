@@ -12,13 +12,12 @@ struct dsu{
 	}
 	inline int find(int x){ // Give index here
 		assert(x >= 0 && x < n);
-		return (x == parent[x] ? x : (parent[x] = find(parent[x])));
+		while (x != parent[x]) x = parent[x] = parent[parent[x]];
+		return x;
 	}
 	bool combine(int a, int b){ // Give indices here, (returns true if a and b are in different sets)
 		assert(min(a,b) >= 0 && max(a,b) < n);
-		a = find(a);
-		b = find(b);
-		if(a != b){
+		if((a = find(a)) != (b = find(b))){
 			if(cmp(a,b))swap(a,b);
 			parent[b] = a;
 			siz[a] += siz[b];
@@ -30,7 +29,7 @@ struct dsu{
 		assert(min(a,b) >= 0 && max(a,b) < n);
 		return find(a) == find(b);
 	}
-	inline int size(int x){ // Returns the size of the set containing a
+	inline int size(int x){ // Returns the size of the set containing x
 		assert(x >= 0 && x < n);
 		return siz[find(x)];
 	}
