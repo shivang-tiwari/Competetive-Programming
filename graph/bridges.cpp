@@ -1,3 +1,5 @@
+// Bridge - An edge whose removal increases the number of connected components in the graph
+// Graph is undirected
 vector<pair<int,int>> find_bridges(vector<vector<int>> &adj){
 	int n = adj.size();
 	vector<bool> visited;
@@ -13,9 +15,10 @@ vector<pair<int,int>> find_bridges(vector<vector<int>> &adj){
 		tin[v] = low[v] = timer++;
 		for (int to : adj[v]) {
 			if (to == p) continue;
-			if (visited[to]) {
+			if (visited[to]){
 				low[v] = min(low[v], tin[to]);
-			} else {
+			} 
+			else{
 				dfs(to, v);
 				low[v] = min(low[v], low[to]);
 				if (low[to] > tin[v]){
@@ -25,7 +28,7 @@ vector<pair<int,int>> find_bridges(vector<vector<int>> &adj){
 			}
 		}
 	};
-	for (int i = 0; i < n; ++i) {
+	for(int i = 0; i < n; ++i){
 		if (!visited[i])
 			dfs(i,-1);
 	}
