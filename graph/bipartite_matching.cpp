@@ -26,64 +26,77 @@ bool bpcheck(vector<vector<int>> &adj){
 	return true;
 }
 
-vector<int> bpm(vector<vector<int>> &G,int n,int m){
-	const int MAX = G.size() + 1,NIL = 0,INF = (1 << 28);
-	vector<int> match(MAX); // Return this if matching is required
-	vector<int> dist(MAX);
-	function<bool()> bfs = [&]() {
-		queue<int> Q;
-		for(int i = 1; i <= n; i++) {
-			if(match[i] == NIL) {
-				dist[i] = 0;
-				Q.push(i);
+class bpm {
+	public:
+	vector< vector<int> > g;
+	vector<int> pa;
+	vector<int> pb;
+	vector<int> was;
+	int n, m;
+	int res;
+	int iter;
+	bpm(int _n, int _m) : n(_n), m(_m){
+		assert(0 <= n && 0 <= m);
+		pa = vector<int>(n, -1);
+		pb = vector<int>(m, -1);
+		was = vector<int>(n, 0);
+		g.resize(n);
+		res = 0;
+		iter = 0;
+	}
+	void add(int from, int to){
+		assert(0 <= from && from < n && 0 <= to && to < m);
+		g[from].push_back(to);
+	}
+	bool dfs(int v) {
+		was[v] = iter;
+		for(int u : g[v]) {
+			if (pb[u] == -1) {
+				pa[v] = u;
+				pb[u] = v;
+				return true;
 			}
-			else dist[i] = INF;
 		}
-		dist[NIL] = INF;
-		while(!Q.empty()) {
-			int u = Q.front();Q.pop();
-			if(u != NIL) {
-				for(int v : G[u]){
-					if(dist[match[v]] == INF) {
-						dist[match[v]] = dist[u] + 1;
-						Q.push(match[v]);
-					}
+		for(int u : g[v]){
+			if(was[pb[u]] != iter && dfs(pb[u])){
+				pa[v] = u;
+				pb[u] = v;
+				return true;
+			}
+		}
+		return false;
+	}
+	int solve() {
+		while(true){
+			iter++;
+			int add = 0;
+			for(int i = 0; i < n; i++){
+				if (pa[i] == -1 && dfs(i)){
+					add++;
 				}
 			}
-		}
-		return (dist[NIL]!=INF);
-	};
-	function<bool(int)> dfs = [&](int u) {
-		if(u != NIL) {
-			for(int v : G[u]){
-				if(dist[match[v]] == dist[u]+1) {
-					if(dfs(match[v])){
-						match[v] = u;
-						match[u] = v;
-						return true;
-					}
-				}
+			if(add == 0){
+				break;
 			}
-			dist[u] = INF;
-			return false;
+			res += add;
 		}
-		return true;
-	};
-	int matching = 0;
-	// match[i] is assumed 0 for all vertex in G
-	while(bfs())
-		for(int i = 1; i <= n; i++){
-			if(match[i] == NIL && dfs(i)){
-				matching++;
-			}
+		return res;
+	}
+	int run_one(int v){
+		if(pa[v] != -1){
+			return 0;
 		}
-	return match;
-}
+		iter++;
+		return (int) dfs(v);
+	}
+};
 
 // n = number of applicants 
 // m = number of jobs
-// Applicants are enumerated as [1,2,3,...,n]
-// Jobs are enumerated as [n+1,n+2,n+3,...,n+m]
-// Make a double sided edge between applicant and job
-// Hopcroft Karp algorithm, O(sqrt(V) * E)
-// !!! REMEMBER 1-BASED INDEXING !!!
+// Applicants are enumerated as [0,1,2,...,n-1]
+// Jobs are enumerated as [0,1,2,...,m-1]
+
+// pa[i] = Job alotted to ith Applicant
+// pb[i] = Applicant alotted to ith Job
+
+// !!! REMEMBER 0-BASED INDEXING !!!
