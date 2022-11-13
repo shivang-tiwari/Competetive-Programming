@@ -119,8 +119,10 @@ int powmod(int x, int y,int mod){
 
 int inv(int x,int mod){
 	assert(__gcd(x,mod) == 1 && "GCD is not 1");
-	x %= mod;
-	return powmod(x,phi(mod)-1,mod);
+	if(x == 1){
+		return 1;
+	}
+	return (1 - inv(mod % x, x) * mod) / x + mod;
 }
 
 
