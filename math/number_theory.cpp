@@ -116,12 +116,17 @@ int64_t powmod(int64_t x, int64_t y,int64_t mod){
 	return res;
 }
 
-int64_t inv(int64_t x,int64_t mod){
-	assert(__gcd(x,mod) == 1 && "GCD is not 1");
-	if(x == 1){
-		return 1;
+template <typename T>
+T inv(T a, T m) {
+	assert(__gcd(a,m) == 1 && "GCD is not 1");
+	T u = 0, v = 1;
+	while (a != 0) {
+		T t = m / a;
+		m -= t * a; swap(a, m);
+		u -= t * v; swap(u, v);
 	}
-	return (1 - inv(mod % x, x) * mod) / x + mod;
+	assert(m == 1);
+	return u;
 }
 
 
