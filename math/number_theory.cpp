@@ -118,14 +118,17 @@ int64_t powmod(int64_t x, int64_t y,int64_t mod){
 
 template <typename T>
 T inv(T a, T m) {
-	assert(__gcd(a,m) == 1 && "GCD is not 1");
 	T u = 0, v = 1;
+	T old = m;
 	while (a != 0) {
 		T t = m / a;
 		m -= t * a; swap(a, m);
 		u -= t * v; swap(u, v);
 	}
 	assert(m == 1);
+	if(u < 0){
+		u += old;
+	}
 	return u;
 }
 
