@@ -1,6 +1,5 @@
 // हर हर महादेव
 #include <bits/stdc++.h>
-#define int long long int
 using namespace std;
 
 // -------------------------------Constants------------------------------------------ //
@@ -51,13 +50,13 @@ void prep(){
 }
 
 // -------------------------------Functions------------------------------------------ //
-vector<pair<int, int>> prime_factorize(int n){ // Prime,exponent
-	int sieve_max = (int)(smallest_factor.size()) - 1;
+vector<pair<int64_t, int>> prime_factorize(int64_t n){ // Prime,exponent
+	int64_t sieve_max = (int64_t)(smallest_factor.size()) - 1;
 	assert(1 <= n && n <= sieve_max * sieve_max);
-	vector<pair<int, int>> result;
+	vector<pair<int64_t, int>> result;
 	if(n <= sieve_max){
 		while(n != 1){
-			int p = smallest_factor[n];
+			int64_t p = smallest_factor[n];
 			int exponent = 0;
 			do{
 				n /= p;
@@ -67,7 +66,7 @@ vector<pair<int, int>> prime_factorize(int n){ // Prime,exponent
 		}
 		return result;
 	}
-	for(int p : primes){
+	for(int64_t p : primes){
 		if(p * p > n)
 			break;
 		if(n % p == 0){
@@ -83,10 +82,10 @@ vector<pair<int, int>> prime_factorize(int n){ // Prime,exponent
 	return result;
 }
 
-int phi_calc(int n) {
-	int result = n;
+int64_t phi_calc(int64_t n) {
+	int64_t result = n;
 	for(int i : primes){
-		if(i*i > n){
+		if((int64_t)i*i > n){
 			break;
 		}
 		if (n % i == 0) {
@@ -100,12 +99,12 @@ int phi_calc(int n) {
 	return result;
 }
 
-int phi(int x){
+int64_t phi(int64_t x){
 	return (x < N ? phi_array[x] : phi_calc(x));
 }
 
-int powmod(int x, int y,int mod){
-	int res = 1;
+int64_t powmod(int64_t x, int64_t y,int64_t mod){
+	int64_t res = 1;
 	x = x % mod;
 	if (x == 0) return 0;
 	while (y > 0){
@@ -117,7 +116,7 @@ int powmod(int x, int y,int mod){
 	return res;
 }
 
-int inv(int x,int mod){
+int64_t inv(int64_t x,int64_t mod){
 	assert(__gcd(x,mod) == 1 && "GCD is not 1");
 	if(x == 1){
 		return 1;
@@ -215,9 +214,22 @@ bool diophantine(int a, int b, int c, int &x0, int &y0) {
     return true;
 }
 
-bool is_prime(int x){
+bool is_prime(int64_t x){
 	if(x == 0 || x == 1)return false;
-	return prime_factorize(x).size() == 1;
+	int64_t sieve_max = (int64_t)(smallest_factor.size()) - 1;
+	assert(x <= sieve_max * sieve_max);
+	if(x < N){
+		return prime[x];
+	}
+	for(int i : primes){
+		if((int64_t)i * i > x){
+			break;
+		}
+		if(x * i == 0){
+			return false;
+		}
+	}
+	return true;
 }
 
 int dis_log(int a, int b, int m) { // a^x == b modulo m
@@ -375,3 +387,7 @@ int32_t main(){
 	}
 	return 0;
 }
+
+
+
+
