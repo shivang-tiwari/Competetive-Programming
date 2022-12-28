@@ -183,3 +183,24 @@ Mint C(int n, int k) {
 	return fact[n] * inv_fact[k] * inv_fact[n - k];
 }
 */
+// --------------------------------------------------------------------------------------- //
+Mint interpolate(const vector<Mint> &y,int t){
+	int n = y.size()-1;
+	Mint num = 1;
+	for(int i = 0; i <= n; i++){
+		num *= t-i;
+	}
+	Mint res = 0;
+	for(int i = 0; i <= n; i++){
+		Mint tmp = y[i] * num / (t-i);
+		tmp *= inv_fact[i];
+		tmp *= inv_fact[n-i];
+		if((n-i) & 1)
+			tmp = -tmp;
+		res += tmp;
+	}
+	return res;
+}
+// y[i] = P(i) at i = [0,1,2, ... N]
+// Calculates P(t)
+// !! Needs factorial up to N !!
