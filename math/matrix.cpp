@@ -76,7 +76,7 @@ struct matrix{
 	
 	
 	// Scalar operations
-	matrix operator * (const int &num){
+	matrix operator * (const int64_t num){
 		matrix<T> res(n,m);
 		for(int i = 0; i < n; i++){
 			for(int j = 0; j < m; j++){
@@ -84,7 +84,7 @@ struct matrix{
 			}
 		}
 	}
-	matrix operator *= (const int &num){
+	matrix operator *= (const int64_t num){
 		for(int i = 0; i < n; i++){
 			for(int j = 0; j < m; j++){
 				a[i][j] *= num;
