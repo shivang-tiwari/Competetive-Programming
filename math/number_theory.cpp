@@ -116,12 +116,11 @@ int64_t powmod(int64_t x, int64_t y,int64_t mod){
 	return res;
 }
 
-template <typename T>
-T inv(T a, T m) {
-	T u = 0, v = 1;
-	T old = m;
+int64_t inv(int64_t a, int64_t m) {
+	int64_t u = 0, v = 1;
+	int64_t old = m;
 	while (a != 0) {
-		T t = m / a;
+		int64_t t = m / a;
 		m -= t * a; swap(a, m);
 		u -= t * v; swap(u, v);
 	}
@@ -137,7 +136,7 @@ T inv(T a, T m) {
 // x == a[i] mod m[i]
 int crt(vector<int> a,vector<int> m){
 	int n = a.size();
-	int prod = 1;
+	int64_t prod = 1;
 	vector<int> M(n);
 	vector<int> y(n);
 	for(int i = 0; i < n; i++){
@@ -149,10 +148,13 @@ int crt(vector<int> a,vector<int> m){
 	}
 	int x = 0;
 	for(int i = 0; i < n; i++){
-		(x += a[i] * y[i] * M[i]) %= prod;
+		int64_t here = (a[i] * y[i]) % prod;
+		(here *= M[i]) %= prod;
+		(x += here) %= prod;
 	}
 	return x;
 }
+
 
 int primitive(int p) {
     vector<int> fact;
