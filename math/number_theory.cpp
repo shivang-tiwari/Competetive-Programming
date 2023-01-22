@@ -134,7 +134,7 @@ int64_t inv(int64_t a, int64_t m) {
 
 // x mod m[i] == a[i] 
 // x == a[i] mod m[i]
-int crt(vector<int> a,vector<int> m){
+int64_t crt(vector<int> a,vector<int> m){
 	int n = a.size();
 	int64_t prod = 1;
 	vector<int> M(n);
@@ -146,7 +146,7 @@ int crt(vector<int> a,vector<int> m){
 		M[i] = prod / m[i];
 		y[i] = inv(M[i],m[i]);
 	}
-	int x = 0;
+	int64_t x = 0;
 	for(int i = 0; i < n; i++){
 		int64_t here = (a[i] * y[i]) % prod;
 		(here *= M[i]) %= prod;
