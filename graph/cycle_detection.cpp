@@ -1,8 +1,8 @@
 //This detects cycle in a ***directed graph***
 bool isCyclic(vector<vector<int>> &adj){
 	int V = adj.size();
-	bool *visited = new bool[V];
-	bool *recStack = new bool[V];
+	vector<bool> visited(V);
+	vector<bool> recStack(V);
 	for(int i = 0; i < V; i++){
 		visited[i] = false;
 		recStack[i] = false;
