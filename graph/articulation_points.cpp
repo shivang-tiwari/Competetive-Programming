@@ -38,5 +38,7 @@ vector<int> find_cutpoints(const vector<vector<int>> &adj) {
 		if(!visited[i])
 			dfs(i,-1);
 	}
+	sort(cutpoints.begin(),cutpoints.end());
+	cutpoints.erase(unique(cutpoints.begin(), cutpoints.end()), cutpoints.end());
 	return cutpoints;
 }
