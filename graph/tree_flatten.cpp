@@ -15,7 +15,7 @@ void traverse(int root = 0,int par = -1){
 			}
 		}
 		Exit[i] = travel_time++;
-	};traverse_tree(root,par);
+	}; traverse_tree(root,par);
 }
 
 bool anc(int child, int ancestor){ // If ansector is an ancestor of child
