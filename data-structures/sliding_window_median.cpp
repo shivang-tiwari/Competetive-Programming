@@ -23,7 +23,7 @@ struct slmed{
 		else bef.erase(bef.lower_bound(x));
 		fix();
 	}
-	T tell(){
+	T median(){
 		auto itr = bef.end(); itr--;
 		if(bef.size() == aft.size() + 1)return *itr;
 		return (*itr + *aft.begin())/2.0;
