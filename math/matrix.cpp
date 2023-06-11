@@ -83,6 +83,7 @@ struct matrix{
 				res[i][j] = a[i][j] * num;
 			}
 		}
+		return res;
 	}
 	matrix operator *= (const int64_t num){
 		for(int i = 0; i < n; i++){
