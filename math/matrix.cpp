@@ -12,7 +12,7 @@ struct matrix{
 	
 	matrix operator + (const matrix &oth){
 		assert(n == oth.n && m == oth.m);
-		matrix<T> res;
+		matrix<T> res(n,m);
 		for(int i = 0; i < n; i++){
 			for(int j = 0; j < m; j++){
 				res[i][j] = a[i][j] + oth.a[i][j];
