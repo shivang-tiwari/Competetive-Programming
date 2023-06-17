@@ -22,8 +22,8 @@ struct aho_corasick{
 	vector<node> t = vector<node>(1);
 	
 	int get_link(int v){
-		if (t[v].link == -1) {
-			if (v == 0 || t[v].p == 0)
+		if (t[v].link == -1){
+			if(v == 0 || t[v].p == 0)
 				t[v].link = 0;
 			else
 				t[v].link = go(get_link(t[v].p), t[v].pch);
