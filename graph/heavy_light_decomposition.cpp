@@ -69,29 +69,31 @@ class HLD{
 		struct node {
 			// don't forget to set default value (used for leaves)
 			// not necessarily neutral element!
-			long long int sum = 0; // Set identity element
-			int add = 0;
+			int sum = 0; // Set identity element
+		
 			void apply(int l, int r, int v) { // Value of a single node (used by build and update)
-				sum = v; 
+				sum = v;
 			}
 			void push(int l, int r, int v) { // Lazy propogation (used by add)
-				sum += v*(r - l + 1); 
-				add += v;
+				//sum += v*(r - l + 1); 
+				//add += v;
+			}
+			void reverse(){
 			}
 		};
 		node unite(const node &a, const node &b) const { // Set combination operation
 			node res;
-			res.sum = a.sum + b.sum; 
+			 res.sum = a.sum + b.sum;
 			return res;
 		}
 		inline void push(int x, int l, int r) {
-			int y = (l + r) >> 1;
-			int z = x + ((y - l + 1) << 1);
-			if (tree[x].add != neutral) {
-				tree[x + 1].push(l, y, tree[x].add);
-				tree[z].push(y + 1, r, tree[x].add);
-				tree[x].add = neutral;
-			}
+			//int y = (l + r) >> 1;
+			//int z = x + ((y - l + 1) << 1);
+			//if (tree[x].add != neutral) {
+				//tree[x + 1].push(l, y, tree[x].add);
+				//tree[z].push(y + 1, r, tree[x].add);
+				//tree[x].add = neutral;
+			//}
 			
 			// Don't forget to uncomment node.push
 		}
@@ -233,7 +235,7 @@ class HLD{
 	bool leave_lca;
 	LCA lca;
 	segtree tr;
-	HLD(const vector<vector<int>> &G,vector<int> &values,bool _leave_lca){
+	HLD(const vector<vector<int>> &G,const vector<int> &values,bool _leave_lca){
 		adj = G;
 		a = values;
 		N = G.size();
@@ -291,20 +293,22 @@ class HLD{
 		if(flag == -1){
 			flag = leave_lca;
 		}
-		segtree::node res;
 		if(u == v){
-			return (flag ? res : tr.find(label[u],label[u]));
+			return (flag ? segtree::node() : tr.find(label[u],label[u]));
 		}
 		int lc = lca.lca(u,v);
+		
+		
+		segtree::node u_to_lca;
 		if(flag){
 			while(depth[u] > depth[lc]){
 				int where = (depth[chain_head[u]] <= depth[lc] ? lc : chain_head[u]);
 				if(where == lc){
-					res = tr.unite(res,tr.find(label[where]+1,label[u]));
+					u_to_lca = tr.unite(tr.find(label[where]+1,label[u]),u_to_lca);
 					u = lc;
 				}
 				else{
-					res = tr.unite(res,tr.find(label[where],label[u]));
+					u_to_lca = tr.unite(tr.find(label[where],label[u]),u_to_lca);
 					u = par[where];
 				}
 			}
@@ -312,23 +316,31 @@ class HLD{
 		else{
 			while(u != -1 && depth[u] >= depth[lc]){
 				int where = (depth[chain_head[u]] <= depth[lc] ? lc : chain_head[u]);
-				res = tr.unite(res,tr.find(label[where],label[u]));
+				u_to_lca = tr.unite(tr.find(label[where],label[u]),u_to_lca);
 				u = par[where];
 			}
 		}
+		
+		u_to_lca.reverse();
+		
+		segtree::node lca_to_v;
+		
 		u = v;
+		// [v,lc)
 		while(depth[u] > depth[lc]){
 			int where = (depth[chain_head[u]] <= depth[lc] ? lc : chain_head[u]);
 			if(where == lc){
-				res = tr.unite(res,tr.find(label[where]+1,label[u]));
+				lca_to_v = tr.unite(tr.find(label[where]+1,label[u]),lca_to_v);
 				u = lc;
 			}
 			else{
-				res = tr.unite(res,tr.find(label[where],label[u]));
+				lca_to_v = tr.unite(tr.find(label[where],label[u]),lca_to_v);
 				u = par[where];
 			}
 		}
-		return res;
+		
+		
+		return tr.unite(u_to_lca,lca_to_v);
 	}
 	void update(int i,int v){
 		tr.update(label[i],v);
@@ -337,7 +349,7 @@ class HLD{
 		if(flag == -1)flag = leave_lca;
 		if(u == v){
 			if(flag)return;
-			tr.add(label[u],label[u]);
+			tr.add(label[u],label[u],x);
 			return;
 		}
 		int lc = lca.lca(u,v);
