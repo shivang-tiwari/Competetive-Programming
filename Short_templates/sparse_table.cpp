@@ -4,19 +4,21 @@ class sparse{
 	int N, LG;
 	vector<vector<T>> spt;
 	vector<int> lg;
-	sparse(const vector<T> &a){
+	sparse(){}
+	sparse(vector<T> &a){
 		N = a.size();
 		LG = 32 - __builtin_clz(std::max(N - 1, 1));
 		spt.resize(N+1, vector<T>(LG+1));
 		lg.resize(N + 5,0);
-		for(int i = 2;i <= N;i++)
+		
+		for(int i = 2;i <= N;i++){
 			lg[i] = lg[i/2] + 1;
-		build(a);
-	}
-	void build(const vector<T> &a){
+		}
+		
 		for(int i = 0;i < N;i++){
 			spt[i][0] = a[i];
 		}
+		
 		for(int j = 1;j <= LG;j++){
 			int len = (1 << j), half = (1 << (j-1));
 			for(int i = 0;i + len <= N;i++){
@@ -24,6 +26,7 @@ class sparse{
 			}
 		}
 	}
+	
 	T find(int l, int r){
 		assert(l <= r && l >= 0 && r <= N-1);
 		int lgg = lg[r-l+1], len = (1 << lgg);
