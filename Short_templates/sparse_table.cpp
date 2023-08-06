@@ -4,7 +4,6 @@ class sparse{
 	int N, LG;
 	vector<vector<T>> spt;
 	vector<int> lg;
-	sparse(){}
 	sparse(vector<T> &a){
 		N = a.size();
 		LG = 32 - __builtin_clz(std::max(N - 1, 1));
