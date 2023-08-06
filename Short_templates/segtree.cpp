@@ -19,23 +19,17 @@ class segtree {
 		return res;
 	}
 	
-	inline pair<int,int> get_ch(int x,int l,int r){
-		int m = (l + r) >> 1;
-		int z = x + ((m - l + 1) << 1);
-		return {m,z};
-	}
-	
 	inline void push(int x, int l, int r) {
-		auto [m,z] = get_ch(x,l,r);
+		int m = (l + r) >> 1;
 		if(tree[x].add != neutral) {
-			tree[x + 1].push(l, m, tree[x].add);
-			tree[z].push(m + 1, r, tree[x].add);
+			tree[2*x + 1].push(l, m, tree[x].add);
+			tree[2*x + 2].push(m + 1, r, tree[x].add);
 			tree[x].add = neutral;
 		}
 	}
 	
-	inline void pull(int x, int z) {
-		tree[x] = unite(tree[x+1], tree[z]);
+	inline void pull(int x) {
+		tree[x] = unite(tree[2*x+1], tree[2*x+2]);
 	}
 
 	int n;
@@ -45,21 +39,21 @@ class segtree {
 		if (lx <= l && r <= rx){
 			return tree[x];
 		}
-		auto [m,z] = get_ch(x,l,r);
+		int m = (l + r) >> 1;
 		push(x, l, r);
 		node res{};
 		if(rx <= m){
-			res = find(x + 1, l, m, lx, rx);
+			res = find(2*x + 1, l, m, lx, rx);
 		} 
 		else{
 			if(lx > m){
-				res = find(z, m + 1, r, lx, rx);
+				res = find(2*x + 2, m + 1, r, lx, rx);
 			}
 			else{
-				res = unite(find(x + 1, l, m, lx, rx), find(z, m + 1, r, lx, rx));
+				res = unite(find(2*x + 1, l, m, lx, rx), find(2*x + 2, m + 1, r, lx, rx));
 			}
 		}
-		pull(x, z);
+		pull(x);
 		return res;
 	}
 	
@@ -69,15 +63,15 @@ class segtree {
 			tree[x].apply(l, r, v);
 			return;
 		}
-		auto [m,z] = get_ch(x,l,r);
+		int m = (l + r) >> 1;
 		push(x, l, r);
 		if (lx <= m) {
-			update(x + 1, l, m, lx, rx, v);
+			update(2*x + 1, l, m, lx, rx, v);
 		}
 		if (rx > m){
-			update(z, m + 1, r, lx, rx, v);
+			update(2*x + 2, m + 1, r, lx, rx, v);
 		}
-		pull(x, z);
+		pull(x);
 	}
 	
 	template <typename M>
@@ -86,37 +80,32 @@ class segtree {
 			tree[x].push(l, r, v);
 			return;
 		}
-		auto [m,z] = get_ch(x,l,r);
+		int m = (l + r) >> 1;
 		push(x, l, r);
-		if (lx <= m) {
-			add(x + 1, l, m, lx, rx, v);
+		if(lx <= m){
+			add(2*x + 1, l, m, lx, rx, v);
 		}
-		if (rx > m) {
-			add(z, m + 1, r, lx, rx, v);
+		if(rx > m) {
+			add(2*x + 2, m + 1, r, lx, rx, v);
 		}
-		pull(x, z);
+		pull(x);
 	}
 	
-	template <typename M>
-	segtree(const vector<M> &v) {
-		n = v.size();
-		assert(n > 0);
-		tree = vector<node>(2*n - 1);
+	segtree(int _n) {
+		n = _n;
+		tree = vector<node>(4*n);
 	}
 	
 	// All functions below
 	template <typename M>
 	void update(int i, const M& v){ // Sets value at index i to v
-		assert(i >= 0 && i < n);
 		update(0, 0, n - 1, i, i, v);
 	}
 	template <typename M>
 	void add(int lx, int rx, const M& v) { // adds v to a[lx to rx]
-		assert(0 <= lx && lx <= rx && rx <= n - 1);
 		add(0, 0, n - 1, lx, rx, v);
 	}
 	node find(int lx, int rx) { // value of lx to rx
-		assert(0 <= lx && lx <= rx && rx <= n - 1);
 		return find(0, 0, n - 1, lx, rx);
 	}
 };
