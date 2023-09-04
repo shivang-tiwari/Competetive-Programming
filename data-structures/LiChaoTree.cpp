@@ -70,3 +70,11 @@ struct LiChaoTree {
 		return z;
 	}
 };
+
+// LiChaoTree<y_type, x_type, -range, range, FLIP >
+
+// Set FLIP = TRUE for max query and FLIP = FALSE for min query
+// All x lie in [-range,range]
+
+// LiChaoTree.insert_line(m,c) : Adds line y = mx + c
+// LiChaoTree.find(x)          : Find min at x
