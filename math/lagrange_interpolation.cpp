@@ -39,8 +39,22 @@ Mint lagrange_general(const vector<pair<int,Mint>> &f, int xi){
 	return result;
 }
 
-Mint lagrange(const vector<pair<int,Mint>> &a,int x,bool sorted = true){
+Mint lagrange(const vector<pair<int,Mint>> &a,int x){
+	assert(!a.empty());
+
+	if(a.size() == 1){
+		return a[0].second;
+	}
+	
 	bool ap = true;
+	bool sorted = true;
+	for(int i = 1; i < (int)a.size(); i++){
+		if(a[i].first <= a[i-1].first){
+			sorted = false;
+			break;
+		}
+	}
+	
 	for(int i = 2; i < (int)a.size(); i++){
 		if(a[i].first - a[i-1].first != a[1].first - a[0].first){
 			ap = false;
