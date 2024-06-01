@@ -21,7 +21,7 @@ vector<int> euler_path(const vector<vector<int>> &adj){
 				v1 = i;
 			else if (v2 == -1)
 				v2 = i;
-			else
+			else // bad parity
 				return {-1};
 		}
 	}
