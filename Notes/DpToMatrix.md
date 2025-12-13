@@ -1,12 +1,9 @@
 Define the State Vector ($V_k$)
 
-Your DP state is defined over a **sliding window** of size $C$, where $C$ is the dependency depth.
-
-For any index $k$, the state vector $V_k$ must contain the $C$ necessary previous values to calculate the next step.
-
-$$V_k = \begin{pmatrix} DP[k] \\ DP[k+1] \\ \vdots \\ DP[k+C-1] \end{pmatrix}$$
+Your DP state is defined over a sliding window of size $C$, where $C$ is the dependency depth.
 
 The goal is to find a $C \times C$ transition matrix $M$ such that:
+
 $$V_{k+1} = M \cdot V_k$$
 
 Let the DP recurrence be:
