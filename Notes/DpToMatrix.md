@@ -1,7 +1,4 @@
-
-
-
-### 1. Define the State Vector ($V_k$)
+Define the State Vector ($V_k$)
 
 Your DP state is defined over a **sliding window** of size $C$, where $C$ is the dependency depth.
 
