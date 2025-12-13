@@ -1,6 +1,6 @@
 Define the State Vector ($V_k$)
 
-$$V_k = \begin{pmatrix} DP[k] \\ DP[k+1] \\ \vdots \\ DP[k+C-1] \end{pmatrix}$$
+$$V_k = \begin{matrix} DP[k] \\ DP[k+1] \\ \vdots \\ DP[k+C-1] \end{matrix}$$
 
 The goal is to find a $C \times C$ transition matrix $M$ such that:
 
