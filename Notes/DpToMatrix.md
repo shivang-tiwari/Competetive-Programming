@@ -1,3 +1,6 @@
+https://codeforces.com/blog/entry/149273
+
+
 Define the State Vector ($V_k$)
 
 $$V_k = \begin{pmatrix} DP[k] \\ 
