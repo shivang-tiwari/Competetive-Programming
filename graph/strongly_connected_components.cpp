@@ -19,8 +19,7 @@ void SCC(vector<vector<int>> &adj){
 		disc[u] = low[u] = ++time;
 		st.push(u);
 		stackMember[u] = true;
-		for (auto i = adj[u].begin(); i != adj[u].end(); ++i){
-			int v = *i;
+		for(int v : adj[u]){
 			if (disc[v] == -1){
 				find_scc(v);
 				low[u]  = min(low[u], low[v]);
@@ -50,19 +49,4 @@ void SCC(vector<vector<int>> &adj){
 	for (int i = 0; i < V; i++){
 		if (disc[i] == -1)find_scc(i);
 	}
-}
-
-// Call this immediately after SCC to get the compressed graph
-
-vector<vector<int>> build_graph(const vector<vector<int>> &adj){ 
-	int n = adj.size();
-	vector<vector<int>> scc_graph(scc.size());
-	for(int i = 0; i < n; i++){
-		for(int x : adj[i]){
-			if(comp[i] != comp[x]){
-				scc_graph[comp[i]].push_back(comp[x]);
-			}
-		}
-	}
-	return scc_graph;
 }
