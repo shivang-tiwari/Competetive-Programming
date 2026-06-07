@@ -1,7 +1,6 @@
 #include <bits/extc++.h>
 using namespace __gnu_pbds;
 template <typename A, typename B = std::less <A>> using ordered_set = tree <A, null_type, B, rb_tree_tag, tree_order_statistics_node_update>;
-template <typename A, typename B, typename C = std::less <A>> using ordered_map = tree <A, B, C, rb_tree_tag, tree_order_statistics_node_update>;
 
 template <typename A>
 struct ordered_multiset{
