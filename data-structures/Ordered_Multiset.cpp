@@ -40,4 +40,3 @@ struct ordered_multiset{
 		return st.size() - less_than(key);
 	}
 };
-//order_of_key (k) : Number of items strictly smaller than k
