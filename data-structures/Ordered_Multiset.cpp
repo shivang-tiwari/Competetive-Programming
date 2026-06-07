@@ -4,7 +4,6 @@ template <typename A, typename B = std::less <A>> using ordered_set = tree <A, n
 
 template <typename A>
 struct ordered_multiset{
-	static const int inf = 1e9 + 60;
 	
 	ordered_set<pair<A,int>> st;
 	map<A,int> freq;
@@ -24,11 +23,11 @@ struct ordered_multiset{
 	}
 	
 	int less_than(const A &key){
-		return st.order_of_key({key,-inf});
+		return st.order_of_key({key,std::numeric_limits<A>::min()});
 	}
 	
 	int less_than_or_equal_to(const A &key){
-		return st.order_of_key({key,+inf});
+		return st.order_of_key({key,std::numeric_limits<A>::max()});
 	}
 	
 	int greater_than(const A &key){
