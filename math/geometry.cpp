@@ -116,7 +116,7 @@ namespace geometry { // geometry Library
 			cy += (y0 + y1) * cross_product;
 		}
 		area = area * 0.5;
-		if (std::abs(area) < 1e-9) {
+		if (abs(area) < EPS) {
 			return {0.0, 0.0};
 		}
 		cx = cx / (6.0 * area);
