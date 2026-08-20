@@ -66,6 +66,7 @@ namespace geometry { // geometry Library
 	bool Intersect(const Circle& c,const Point& p){return abs( ( p - c.p).abs() - c.r ) < EPS;}
 	int  Intersect(const Circle& c, const Segment& l){if( (Projection( l, c.p) - c.p).norm() - c.r * c.r > EPS) return 0;const double d1 = ( c.p - l.a).abs(), d2 = ( c.p - l.b).abs();if( d1 < c.r + EPS && d2 < c.r + EPS) return 0;if(( d1 < c.r - EPS && d2 > c.r + EPS )|| (d1 > c.r + EPS && d2 < c.r - EPS )) return 1;const Point h = Projection( l, c.p);if( dot( l.a - h, l.b - h) < 0) return 2;return 0;}
 	bool Intersect(const Circle& a,const Circle& b){return ( ( a.p - b.p).norm() - ( a.r + b.r) * ( a.r + b.r) < EPS) &&( ( a.p - b.p).norm() - ( a.r - b.r) * ( a.r - b.r) > -EPS);}
+	bool Intersect(const Polygon& Q,const Segment& l){for(int i = 0; i < (int)Q.size(); i++){if(Intersect(Segment(Q[i],Q[(i+1)%Q.size()]),l))return true;}return false;}
 	double Distance(const Segment& s,const Point& p){Point r = Projection(s, p);if ( Intersect( s, r)) return ( r - p).abs();return min( ( s.a - p).abs(), ( s.b - p).abs());}
 	double Distance(const Segment& a,const Segment& b){if(Intersect( a, b)) return 0;return min( min( Distance( a, b.a), Distance( a, b.b)), min( Distance( b, a.a), Distance( b, a.b)));}
 	double Distance(const Line& l,const Line& m) {return Intersect( l, m) ? 0 : Distance( l, m.a);}
@@ -81,7 +82,7 @@ namespace geometry { // geometry Library
 	bool Contains(const Circle& c,const Point& p){return ( c.p - p).abs() < c.r + EPS;}
 	double Area2(const Polygon& p){ double A = 0;for (int i = 0; i < (int)p.size(); ++i){A += cross(curr(p, i), next(p, i));}return A;}
 	bool IsConvex(const Polygon& p){for(int i = 0; i < (int)p.size(); i++){if(ccw(prev(p,i),curr(p,i),next(p,i)) == -1) return false;}return true;}
-	Polygon convexHull(Polygon& p){
+	Polygon convexHull(Polygon& p){ // Can contain multiple points on same line
 		int n = p.size(), k = 0;
 		if(n >= 3){
 			sort( p.begin(), p.end());
@@ -98,6 +99,30 @@ namespace geometry { // geometry Library
 			return p;
 		}
 	}
+	Point getCentroid(const Polygon& points) {
+		double area = 0.0;
+		double cx = 0.0;
+		double cy = 0.0;
+		size_t n = points.size();
+		if (n < 3) return {0.0, 0.0};
+		for (size_t i = 0; i < n; ++i) {
+			double x0 = points[i].x;
+			double y0 = points[i].y;
+			double x1 = points[(i + 1) % n].x;
+			double y1 = points[(i + 1) % n].y;
+			double cross_product = (x0 * y1) - (x1 * y0);
+			area += cross_product;
+			cx += (x0 + x1) * cross_product;
+			cy += (y0 + y1) * cross_product;
+		}
+		area = area * 0.5;
+		if (std::abs(area) < 1e-9) {
+			return {0.0, 0.0};
+		}
+		cx = cx / (6.0 * area);
+		cy = cy / (6.0 * area);
+		return {cx, cy};
+	}
 };
 using namespace geometry;
-// TODO : While printing, cast into integer if necessary
+#pragma message("While printing, cast into integer if necessary")
